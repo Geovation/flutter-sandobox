@@ -3,10 +3,12 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_sandbox/google_ml_kit/barcode_scanner_view.dart';
+import 'package:flutter_sandbox/google_ml_kit/face_detection_view.dart';
 import 'package:flutter_sandbox/pageNavigatorCustom.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
+import 'barcode_scanner_view.dart';
 
 class GoogleMLKitPage extends StatefulWidget {
   static const id = "google_ml_kit_page";
@@ -27,7 +29,7 @@ class _GoogleMLKitPageState extends State<GoogleMLKitPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 1);
+    _tabController = TabController(vsync: this, length: 2);
   }
 
   @override
@@ -40,9 +42,19 @@ class _GoogleMLKitPageState extends State<GoogleMLKitPage>
     Widget indexedWidget;
     switch (index) {
       case 0:
-        indexedWidget = BarcodeScannerView(
-          cameras: widget.cameras,
-        );
+        Future.delayed(Duration(seconds: 3), () {
+          indexedWidget = BarcodeScannerView(
+            cameras: widget.cameras,
+          );
+        });
+
+        break;
+      case 1:
+        Future.delayed(Duration(seconds: 3), () {
+          indexedWidget = FaceDetectionView(
+            cameras: widget.cameras,
+          );
+        });
     }
     return indexedWidget;
   }
@@ -60,6 +72,7 @@ class _GoogleMLKitPageState extends State<GoogleMLKitPage>
 
     final List<Tab> googleMLKitTabs = <Tab>[
       Tab(text: localizations.googMLKitBarcodeScanner),
+      Tab(text: "Face"),
     ];
 
     return (kIsWeb)
@@ -84,6 +97,7 @@ class _GoogleMLKitPageState extends State<GoogleMLKitPage>
               controller: _tabController,
               children: [
                 onSelectedWindow(0, localizations),
+                onSelectedWindow(1, localizations),
               ],
             ),
           );

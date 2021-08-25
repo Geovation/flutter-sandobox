@@ -33,6 +33,7 @@ class _CameraViewState extends State<CameraView> {
   @override
   void initState() {
     super.initState();
+    print(widget.cameras.length);
 
     for (var i = 0; i < widget.cameras.length; i++) {
       if (widget.cameras[i].lensDirection == widget.initialDirection) {
